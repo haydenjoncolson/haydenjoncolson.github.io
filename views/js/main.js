@@ -450,10 +450,9 @@ var resizePizzas = function(size) {
     }
 
     var randomPizzas = document.getElementsByClassName(".randomPizzaContainer");
-    var dx = determineDx(randomPizzas[i], size);
-    var newwidth = (randomPizzas[i].style.width + dx) + 'px';
-    for (var i; i < randomPizzas.length; i++) {
-      randomPizzas[i].style.width = newwidth;
+
+    for (var i = 0; i < randomPizzas.length; i++) {
+      randomPizzas[i].style.width = newwidth + "%";
     }
   }
 
