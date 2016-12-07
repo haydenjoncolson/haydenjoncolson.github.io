@@ -509,11 +509,12 @@ function updatePositions() {
   // change querySelectorAll to get elemenrs by class name
   // Do the mover elements change? If not, why not caching them outside of the updatePosiitons function
   var items = document.getElementsByClassName('mover');
-  var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+
 // move phase variable out of loop
 
   // http://www.w3schools.com/js/js_performance.asp
   for (var i = 0; i < items.length; i++) {
+    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
 
     // reduce activity in the loop
 
