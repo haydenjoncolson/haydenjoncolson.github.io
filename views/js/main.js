@@ -515,10 +515,7 @@ function updatePositions() {
   // http://www.w3schools.com/js/js_performance.asp
   for (var i = 0; i < items.length; i++) {
     var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
-
     // reduce activity in the loop
-
-
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
