@@ -11,5 +11,6 @@
 
 ## How to use
 - Open index.html in main directory.
-- Locate the link to Cam's Pizzeria
--
+- Locate and open the link to Cam's Pizzeria
+- Scroll up and down to move pizza background
+- Use pizza slider to change the size of the pizzas
