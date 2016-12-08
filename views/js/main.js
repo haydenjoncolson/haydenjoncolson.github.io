@@ -422,39 +422,35 @@ var resizePizzas = function(size) {
   changeSliderLabel(size);
 
    // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
-  function determineDx (elem, size) {
-    var oldWidth = elem.offsetWidth;
-    var windowWidth = document.querySelector("#randomPizzas").offsetWidth;
-    var oldSize = oldWidth / windowWidth;
 
     // Changes the slider value to a percent width
-    function sizeSwitcher (size) {
+    //got rid of dx function all together
+    // sets value of newwidth on size
+    function changePizzaSizes(size) {
+      var newwidth;
+
       switch(size) {
         case "1":
-          return 0.25;
+          newwidth = 25;
+          break;
         case "2":
-          return 0.3333;
+          newwidth = 33.33;
+          break;
         case "3":
-          return 0.5;
+          newwidth = 50;
+          break;
         default:
           console.log("bug in sizeSwitcher");
       }
-    }
-
-    var newSize = sizeSwitcher(size);
-    var dx = (newSize - oldSize) * windowWidth;
-
-    return dx;
-  }
 
   // Iterates through pizza elements on the page and changes their widths
-  function changePizzaSizes(size) {
-    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
-      var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
-      var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+
+    var randomPizzas = document.getElementsByClassName("randomPizzaContainer");
+
+    for (var i = 0; i < randomPizzas.length; i++) {
+      randomPizzas[i].style.width = newwidth + '%';
     }
-  }
+}
 
   changePizzaSizes(size);
 
@@ -468,7 +464,7 @@ var resizePizzas = function(size) {
 window.performance.mark("mark_start_generating"); // collect timing data
 
 // This for-loop actually creates and appends all of the pizzas when the page loads
-for (var i = 2; i < 100; i++) {
+for (var i = 2; i < 35; i++) {
   var pizzasDiv = document.getElementById("randomPizzas");
   pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
@@ -506,11 +502,21 @@ function updatePositions() {
   // Faster selector?
   // Do the mover elements change? If not, why not caching them outside of the updatePosiitons function
 
-  var items = document.querySelectorAll('.mover');
-  for (var i = 0; i < items.length; i++) {
+  var items = document.getElementsByClassName('mover');
+
+  // cache variables out of the loop
+  var cacheLength = items.length;
+  var scrollTop = document.body.scrollTop / 1250;
+  var phase = [];
+
+  for (var i = 0; i < 5; i++) {
+        phase.push(Math.sin(scrollTop + i) * 100);
+  }
+
+  for (var i = 0; i < cacheLength; i++) {
     // reduce activity in the loop
-    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+
+    items[i].style.left = items[i].basicLeft + phase[i%5] + 'px';
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -529,7 +535,7 @@ window.addEventListener('scroll', updatePositions);
 
 // Cache element outside the loop reduces activit in the loop
 // Can you use a faster DOM selector then "querySelector"
-//var pizzaElem =
+var pizzaElem = document.getElementById("movingPizzas1")
 
 // Reduce the number of DOM elements bc only 30 pizzas are visible on the page
 // DOM access is slowly
@@ -538,7 +544,7 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  for (var i = 0; i < 35; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
@@ -548,7 +554,8 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
 
     // pizzaElem.append
-    document.querySelector("#movingPizzas1").appendChild(elem);
+    pizzaElem.appendChild(elem);
   }
-  updatePositions();
+  //
+  requestAnimationFrame(updatePositions);
 });
