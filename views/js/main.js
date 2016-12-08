@@ -506,16 +506,17 @@ function updatePositions() {
   window.performance.mark("mark_start_frame");
 
   // Faster selector?
-  // change querySelectorAll to get elemenrs by class name
   // Do the mover elements change? If not, why not caching them outside of the updatePosiitons function
-  var items = document.getElementsByClassName('mover');
+  var items = document.querySelectorAll('.mover');
 
-// move phase variable out of loop
+
 
   // http://www.w3schools.com/js/js_performance.asp
   for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+
     // reduce activity in the loop
+    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
@@ -540,7 +541,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Cache element outside the loop reduces activit in the loop
   // Can you use a faster DOM selector then "querySelector"
-  var pizzaElem = document.getElementById("movingPizzas1");
+  //var pizzaElem =
 
   // Reduce the number of DOM elements bc only 30 pizzas are visible on the page
   // DOM access is slowly
@@ -554,7 +555,7 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
 
     // pizzaElem.append
-    pizzaElem.appendChild(elem);
+    document.querySelector("#movingPizzas1").appendChild(elem);
   }
   updatePositions();
 });
