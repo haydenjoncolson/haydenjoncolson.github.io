@@ -449,11 +449,10 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-    var randomPizzas = document.getElementsByClassName(".randomPizzaContainer");
-    for (var i = 0; i < randomPizzas.length; i++) {
-      var dx = determineDx(randomPizzas[i], size);
-      var newwidth = (randomPizzas[i].offsetWidth + dx) + 'px';
-      randomPizzas[i].style.width = newwidth;
+    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
+      var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
+      var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
+      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
     }
   }
 
@@ -497,26 +496,20 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // The following code for sliding background pizzas was pulled from Ilya's demo found at:
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
+
 // defacto a loop
 // Moves the sliding background pizzas based on scroll position
 function updatePositions() {
-
-  console.count("updatePositions");
   frame++;
   window.performance.mark("mark_start_frame");
 
   // Faster selector?
   // Do the mover elements change? If not, why not caching them outside of the updatePosiitons function
+
   var items = document.querySelectorAll('.mover');
-
-
-
-  // http://www.w3schools.com/js/js_performance.asp
   for (var i = 0; i < items.length; i++) {
-
     // reduce activity in the loop
     var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
-
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
@@ -531,21 +524,21 @@ function updatePositions() {
 }
 
 // runs updatePositions on scroll
-// https://developer.mozilla.org/en-US/docs/Web/Events/scroll
 window.addEventListener('scroll', updatePositions);
+
+
+// Cache element outside the loop reduces activit in the loop
+// Can you use a faster DOM selector then "querySelector"
+//var pizzaElem =
+
+// Reduce the number of DOM elements bc only 30 pizzas are visible on the page
+// DOM access is slowly
 
 // Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-
-  // Cache element outside the loop reduces activit in the loop
-  // Can you use a faster DOM selector then "querySelector"
-  //var pizzaElem =
-
-  // Reduce the number of DOM elements bc only 30 pizzas are visible on the page
-  // DOM access is slowly
-  for (var i = 0; i < 40; i++) {
+  for (var i = 0; i < 200; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
